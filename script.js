@@ -22,35 +22,66 @@ function divide(numA, numB) {
 function operate(numA, numB, operater) {
   switch (operater) {
     case "+":
-      add(numA, numB);
+      return add(numA, numB);
       break;
     case "-":
-      subtract(numA, numB);
+      return subtract(numA, numB);
       break;
     case "*":
-      multiply(numA, numB);
+      return multiply(numA, numB);
       break;
     case "/":
-      divide(numA / numB);
+      return divide(numA, numB);
       break;
   }
 }
 
+let numA = 1,
+  numB = 1,
+  operator = "",
+  times = 0;
+
 //  Display Function
 function display(btn) {
-  console.log(btn.textContent);
   const displayDiv = document.querySelector("#screen");
-  displayDiv.textContent += btn.textContent;
-  if ((operator == ""))
-    numA = btn.textContent
+  if (btn.id == "clr") {
+    displayDiv.textContent = "";
+    times = 0;
+  } else if (btn.className == "nmbr") {
+    numB = numB * times + +btn.textContent;
+    times = 10;
+    // console.log("Number: " + numB);
+    console.log(numB);
+    displayDiv.textContent += btn.textContent;
+  } else if (btn.className == "opr") {
+    operator = btn.textContent;
+    console.log(operator);
+    displayDiv.textContent += btn.textContent;
+    numA = numB;
+    numB = 1;
+    times = 0;
+  } else if (btn.id == "equal") {
+    console.log(
+      "NumA: " + numA + "  numB: " + numB + "  operator: " + operator
+    );
+    numB = operate(numA, numB, operator);
+    displayDiv.textContent = numB;
+  }
 }
 
-//  variables
-let numA, numB, operator, operatorArray = ["+", "-", "*", "/"];
-
 //  Event Listeners
-const buttons = document.querySelectorAll("button");
-
-buttons.forEach((btn) => {
-  btn.addEventListener("click", () => display(btn));
+const numbers = document.querySelectorAll(".nmbr");
+numbers.forEach((num) => {
+  num.addEventListener("click", () => display(num));
 });
+
+const operators = document.querySelectorAll(".opr");
+operators.forEach((opr) => {
+  opr.addEventListener("click", () => display(opr));
+});
+
+const clr = document.querySelector("#clr");
+clr.addEventListener("click", () => display(clr));
+
+const eqaul = document.querySelector("#equal");
+eqaul.addEventListener("click", () => display(eqaul));
