@@ -10,7 +10,7 @@
 }
 
 #btn-container {
-  height: 220px;
+  height: 270px;
   width: 300px;
   padding: 10px;
   display: flex;
@@ -22,7 +22,6 @@ button {
   height: 50px;
   width: 70px;
   border-radius: 10px;
-  /* margin: 1px; */
 }
 
 #main-container {
@@ -30,4 +29,24 @@ button {
   padding: 10px;
   border: 1px solid chocolate;
   border-radius: 10px;
+}
+
+#clr {
+  height: 50px;
+  width: 300px;
+  border-radius: 10px;
+}
+
+.nmbr {
+  background-color: black;
+  color: white;
+}
+#clr {
+  background-color: red;
+  color: white;
+}
+
+#equal {
+  background-color: rgb(39, 235, 39);
+  color: white;
 }
