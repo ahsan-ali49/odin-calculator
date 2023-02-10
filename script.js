@@ -53,12 +53,12 @@ function display(btn) {
   } else if (btn.className == "nmbr") {
     numB = numB * times + +btn.textContent;
     times = 10;
-    console.log(numB);
+
     displayDiv.textContent += btn.textContent;
   } else if (btn.className == "opr") {
     if (operator == "") {
       operator = btn.textContent;
-      console.log(operator);
+
       displayDiv.textContent += btn.textContent;
       numA = numB;
       numB = 1;
@@ -72,9 +72,6 @@ function display(btn) {
       times = 0;
     }
   } else if (btn.id == "equal" && operator != "") {
-    console.log(
-      "NumA: " + numA + "  numB: " + numB + "  operator: " + operator
-    );
     numB = operate(numA, numB, operator);
     displayDiv.textContent = numB;
     operator = "";
@@ -84,7 +81,6 @@ function display(btn) {
 function removeElement(backspace) {
   const displayDiv = document.querySelector("#screen");
   let lastNum = displayDiv.textContent[displayDiv.textContent.length - 1];
-  console.log(lastNum);
   displayDiv.textContent = displayDiv.textContent.substring(
     0,
     displayDiv.textContent.length - 1
@@ -92,7 +88,6 @@ function removeElement(backspace) {
   if (times != 0) {
     numB = numB - +lastNum;
     numB = numB / times;
-    console.log("Hello NumB: " + numB);
   }
 }
 
