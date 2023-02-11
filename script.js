@@ -36,77 +36,117 @@ function operate(numA, numB, operater) {
   }
 }
 
-let numA = 1,
-  numB = 1,
-  operator = "",
-  times = 0;
-
+let numA = 1;
+let numB = 1;
+let operator = "";
+let times = 0;
+const displayDiv = document.querySelector("#screen");
+let showText = "";
+let oprSign = ["+", "-", "*", "/"];
 //  Display Function
-function display(btn) {
-  const displayDiv = document.querySelector("#screen");
-  if (btn.id == "clr") {
-    displayDiv.textContent = "";
-    numA = 1;
+
+function displayNum(btn) {
+  numB = numB * times + +btn.textContent;
+  times = 10;
+  showText += btn.textContent;
+  if (showText.length >= 16) {
+    adjustScreen(showText);
+  } else displayDiv.textContent = showText;
+}
+
+function displayOpr(btn) {
+  if (operator == "") {
+    operator = btn.textContent;
+    showText += btn.textContent;
+    if (showText.length >= 16) {
+      adjustScreen(showText);
+    } else displayDiv.textContent = showText;
+    numA = numB;
     numB = 1;
-    operator = "";
     times = 0;
-  } else if (btn.className == "nmbr") {
-    numB = numB * times + +btn.textContent;
-    times = 10;
-
-    displayDiv.textContent += btn.textContent;
-  } else if (btn.className == "opr") {
-    if (operator == "") {
-      operator = btn.textContent;
-
-      displayDiv.textContent += btn.textContent;
-      numA = numB;
-      numB = 1;
-      times = 0;
-    } else {
-      numB = operate(numA, numB, operator);
-      operator = btn.textContent;
-      displayDiv.textContent = numB + btn.textContent;
-      numA = numB;
-      numB = 1;
-      times = 0;
-    }
-  } else if (btn.id == "equal" && operator != "") {
+  } else if (
+    !oprSign.includes(showText.substring(showText.length - 1, showText.length))
+  ) {
     numB = operate(numA, numB, operator);
-    displayDiv.textContent = numB;
+    operator = btn.textContent;
+    showText = numB + btn.textContent;
+    displayDiv.textContent = showText;
+    numA = numB;
+    numB = 1;
+    times = 0;
+  } else {
+    removeElement();
+    operator = btn.textContent;
+    showText += btn.textContent;
+    if (showText.length >= 16) {
+      adjustScreen(showText);
+    } else displayDiv.textContent = showText;
+  }
+}
+function display(btn) {
+  if (
+    !oprSign.includes(showText.substring(showText.length - 1, showText.length))
+  ) {
+    if (operator != "") {
+      numB = operate(numA, numB, operator);
+      showText = numB.toString();
+      if (numB > 999999999999999) {
+        alert("Number is Too Large!");
+        clearScreen();
+      } else if (showText.length >= 16) {
+        numB = Math.round(numB);
+        showText = numB;
+        displayDiv.textContent = showText;
+      } else displayDiv.textContent = showText;
+      operator = "";
+    }
+  } else alert("Enter another Number as well!");
+}
+function removeElement() {
+  let lastNum = showText[showText.length - 1];
+  showText = showText.substring(0, showText.length - 1);
+  if (showText.length >= 16) {
+    adjustScreen(showText);
+  } else displayDiv.textContent = showText;
+  if (times != 0 && !oprSign.includes(lastNum)) {
+    numB = numB - +lastNum;
+    numB = numB / times;
+  } else {
     operator = "";
+    numB = numA;
   }
 }
 
-function removeElement(backspace) {
-  const displayDiv = document.querySelector("#screen");
-  let lastNum = displayDiv.textContent[displayDiv.textContent.length - 1];
-  displayDiv.textContent = displayDiv.textContent.substring(
-    0,
-    displayDiv.textContent.length - 1
-  );
-  if (times != 0) {
-    numB = numB - +lastNum;
-    numB = numB / times;
-  }
+function clearScreen() {
+  displayDiv.textContent = showText = "";
+  numA = 1;
+  numB = 1;
+  operator = "";
+  times = 0;
+}
+
+function adjustScreen(showText) {
+  let startIndex = showText.length - 15;
+  let endIndex = showText.length;
+  displayDiv.textContent = showText.substring(startIndex, endIndex);
 }
 
 //  Event Listeners
 const numbers = document.querySelectorAll(".nmbr");
 numbers.forEach((num) => {
-  num.addEventListener("click", () => display(num));
+  num.addEventListener("click", () => displayNum(num));
 });
 
 const operators = document.querySelectorAll(".opr");
 operators.forEach((opr) => {
-  opr.addEventListener("click", () => display(opr));
+  opr.addEventListener("click", () => displayOpr(opr));
 });
 
 const clr = document.querySelector("#clr");
-clr.addEventListener("click", () => display(clr));
+clr.addEventListener("click", clearScreen);
 
-const eqaul = document.querySelector("#equal");
-eqaul.addEventListener("click", () => display(eqaul));
+const equal = document.querySelector("#equal");
+equal.addEventListener("click", () => display(equal));
 
 const backspace = document.querySelector("#backspace");
-backspace.addEventListener("click", () => removeElement(backspace));
+backspace.addEventListener("click", removeElement);
