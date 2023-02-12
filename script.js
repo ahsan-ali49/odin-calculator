@@ -43,6 +43,7 @@ let times = 0;
 const displayDiv = document.querySelector("#screen");
 let showText = "";
 let oprSign = ["+", "-", "*", "/"];
+
 //  Display Function
 
 function displayNum(btn) {
@@ -89,6 +90,7 @@ function display(btn) {
   ) {
     if (operator != "") {
       numB = operate(numA, numB, operator);
+      numB = numB.toFixed(2);
       showText = numB.toString();
       if (numB > 999999999999999) {
         alert("Number is Too Large!");
